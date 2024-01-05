@@ -25,7 +25,7 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
-
+    // all collection
     const usersCollection = client.db('bistroDb').collection('users');
     const menuCollection = client.db('bistroDb').collection('menu');
     const reviewCollection = client.db('bistroDb').collection('reviews');
@@ -46,6 +46,13 @@ async function run() {
     const result = await usersCollection.find().toArray();
     res.send(result);
   })
+  // users delete all users from the database
+  app.delete('/users/:id', async (req, res) => {
+    const id = req.params.id;
+    const query = {_id: new ObjectId(id)};
+    const result = await usersCollection.deleteOne(query);
+    res.send(result);
+  });
     // get menu collection from the database
     app.get('/menu', async (req, res) => {
         const result = await menuCollection.find().toArray();
